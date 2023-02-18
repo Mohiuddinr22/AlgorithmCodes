@@ -2,18 +2,19 @@
 #include <vector>
 using namespace std;
 
-void InsertionSort(int *arr, int size)
+void InsertionSort(int *array, int size)
 {
-    int i, j;
-    for (i = 1; i <= size; i++)
+    int i, j, carry;
+    for (i = 0; i < size; i++)
     {
-        for (j = i - 1; j >= 0; j--)
+        carry = array[i];
+        j = i - 1;
+        while (j >= 0 && array[j] > carry)
         {
-            if (arr[j] > arr[j + 1])
-            {
-                swap(arr[j + 1], arr[j]);
-            }
+            swap(array[j], array[j + 1]);
+            j--;
         }
+        array[j + 1] = carry;
     }
 }
 
