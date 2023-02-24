@@ -66,7 +66,7 @@ int main()
     cout << "Enter the size of your array : ";
     cin >> size;
     int array[size];
-    cout << "Enter "<<size<<" elements of your array : " << endl;
+    cout << "Enter " << size << " elements of your array : " << endl;
     for (int i = 0; i < size; i++)
     {
         cin >> array[i];

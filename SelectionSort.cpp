@@ -14,18 +14,19 @@ void DisplayArray(int *array, int size)
 
 void SelectionSort(int *array, int size)
 {
-    int i, j, carry;
+    int i, j, k;
     for (i = 0; i < size - 1; i++)
     {
-        carry = i;
+        k = i;
         for (j = i + 1; j < size; j++)
         {
-            if (array[carry] > array[j])
+            if (array[j] < array[k])
             {
-                carry = j;
+                k = j;
             }
         }
-        swap(array[i], array[carry]);
+        if (i != k)
+            swap(array[i], array[k]);
     }
 }
 
