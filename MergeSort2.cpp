@@ -40,9 +40,9 @@ int main()
 {
     int array[9] = {9, 6, 3, 4, 2, 7, 1, 8, 5};
     MergeSort(array, 0, 9 - 1);
-    for (int i = 0; i < 9; i++)
+    for (auto element : array)
     {
-        cout << array[i] << "\t";
+        cout << element << "\t";
     }
     cout << endl;
 }
