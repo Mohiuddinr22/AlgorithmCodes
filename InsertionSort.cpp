@@ -5,7 +5,7 @@ using namespace std;
 void InsertionSort(int *array, int size)
 {
     int i, j, carry;
-    for (i = 0; i < size; i++)
+    for (i = 1; i < size; i++)
     {
         carry = array[i];
         j = i - 1;
