@@ -1,14 +1,45 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-void CountingSort(int *array, int size)
+int FindLargest(int *array, int size)
 {
-    //find the largest number and make an array of that size
-    //input 1 for each value matching with the index and increase it by 1 for repeatation
-    //
-    for(i = 0; i < size; i++){
-        
+    int largestNum = array[0];
+    for (int i = 1; i < size; i++)
+    {
+        if (array[i] > largestNum)
+            largestNum = array[i];
+    }
+    return largestNum;
+}
+
+int CountingSort(int *array, int size)
+{
+    int sizeOfIndicesArray = FindLargest(array, size);
+    int i, j, k, l, m, arrayOfIndices[sizeOfIndicesArray], sortedArray[size];
+    for (i = 0; i <= sizeOfIndicesArray; i++)
+        arrayOfIndices[i] = 0;
+    for (j = 0; j < size; j++)
+        arrayOfIndices[array[j]]++;
+    for (k = 1; k <= sizeOfIndicesArray; k++)
+        arrayOfIndices[k] += arrayOfIndices[k - 1];
+    for (l = size - 1; l >= 0; l--)
+    {
+        sortedArray[arrayOfIndices[array[l]] - 1] = array[l];
+        arrayOfIndices[array[l]]--;
+    }
+    for (m = 0; m < size; m++)
+    {
+        array[m] = sortedArray[m];
     }
 }
 
-int main() {}
+int main()
+{
+    int array[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    CountingSort(array, 10);
+    for (int element : array)
+        cout << element << "\t";
+
+    cout << endl;
+}
