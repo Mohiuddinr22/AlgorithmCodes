@@ -2,10 +2,10 @@
 #include <vector>
 using namespace std;
 
-int FindLargest(int *array, int size)
+int FindLargest(int array[], int size)
 {
     int largestNum = array[0];
-    for (int i = 1; i < size; i++)
+    for (int i = 0; i < size; i++)
     {
         if (array[i] > largestNum)
             largestNum = array[i];
