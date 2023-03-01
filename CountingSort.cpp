@@ -19,10 +19,13 @@ int CountingSort(int *array, int size)
     int i, j, k, l, m, arrayOfIndices[sizeOfIndicesArray], sortedArray[size];
     for (i = 0; i <= sizeOfIndicesArray; i++)
         arrayOfIndices[i] = 0;
+
     for (j = 0; j < size; j++)
         arrayOfIndices[array[j]]++;
+
     for (k = 1; k <= sizeOfIndicesArray; k++)
         arrayOfIndices[k] += arrayOfIndices[k - 1];
+
     for (l = size - 1; l >= 0; l--)
     {
         sortedArray[arrayOfIndices[array[l]] - 1] = array[l];
@@ -36,8 +39,8 @@ int CountingSort(int *array, int size)
 
 int main()
 {
-    int array[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-    CountingSort(array, 10);
+    int array[5] = {6, 5, 4, 3, 9000};
+    CountingSort(array, 5);
     for (int element : array)
         cout << element << "\t";
 

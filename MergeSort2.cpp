@@ -26,11 +26,18 @@ void Merge(int *array, int low, int mid, int high)
         array[k++] = rightArr[j++];
 }
 
+int count = 0;
+
 void MergeSort(int *array, int low, int high)
 {
     if (low < high)
     {
         int mid = floor((high + low) / 2);
+        if (low != high)
+        {
+            cout << count + 1 << " times." << endl;
+            count++;
+        }
         MergeSort(array, low, mid);
         MergeSort(array, mid + 1, high);
         Merge(array, low, mid, high);
