@@ -28,6 +28,24 @@ public:
         adjMatrix[start][end] = 0;
         adjMatrix[end][start] = 0;
     }
+    void DFS_visit(int r, int c)
+    {
+    }
+
+    int DFS()
+    {
+        int count = 0;
+        for (int i = 0; i <= this->vertex; i++)
+        {
+            for (int j = 0; j <= this->vertex; j++)
+            {
+                if (this->adjMatrix[i][j] == 1)
+                    count++;
+            }
+        }
+        return count;
+    }
+
     void showAdjMatrix()
     {
         int vtxR = 0, vtxC = 1;
@@ -59,14 +77,16 @@ public:
 
 int main()
 {
-    Graph graph(5);
+    Graph graph(7);
     graph.addEdge(1, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(1, 4);
     graph.addEdge(2, 3);
     graph.addEdge(3, 4);
-    graph.addEdge(1, 4);
-    graph.addEdge(1, 3);
     graph.addEdge(4, 5);
-    graph.addEdge(3, 5);
-
+    graph.addEdge(5, 6);
+    graph.addEdge(5, 7);
     graph.showAdjMatrix();
+
+    cout << graph.DFS() << endl;
 }
