@@ -1,74 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/*struct Stack
-{
-private:
-    vector<int> stack;
-
-public:
-    void push(int item)
-    {
-        stack.push_back(item);
-    }
-    void pop()
-    {
-        stack.pop_back();
-    }
-    void showStack()
-    {
-        for (int i = 0; i < stack.size(); i++)
-            cout << stack[i] << "\t";
-        cout << endl;
-    }
-    int top()
-    {
-        return stack[stack.size() - 1];
-    }
-    bool exists(int v)
-    {
-        for (int i = 0; i < stack.size(); i++)
-            if (stack[i] == v)
-                return true;
-        return false;
-    }
-};
-
-struct Queue
-{
-private:
-    vector<int> queue;
-
-public:
-    void enqueue(int item)
-    {
-        queue.push_back(item);
-    }
-    void dequeue()
-    {
-        for (int i = 0; i < queue.size() - 1; i++)
-        {
-            queue.at(i) = queue[i + 1];
-        }
-        queue.resize(queue.size() - 1);
-    }
-    void showQueue()
-    {
-        for (int i = 0; i < queue.size(); i++)
-        {
-            cout << queue[i] << "\t";
-        }
-        cout << endl;
-    }
-    bool exists(int v)
-    {
-        for (int i = 0; i < queue.size(); i++)
-            if (queue[i] == v)
-                return true;
-        return false;
-    }
-};*/
-
 struct Graph
 {
 private:
@@ -129,7 +61,7 @@ public:
         }
     }
 
-    void DFS(int v) 
+    void DFS(int v)
     {
         DFS_visit(v);
         for (int i = 0; i <= numVertices; i++)
