@@ -129,7 +129,7 @@ public:
         }
     }
 
-    void DFS(int v)
+    void DFS(int v) 
     {
         DFS_visit(v);
         for (int i = 0; i <= numVertices; i++)
