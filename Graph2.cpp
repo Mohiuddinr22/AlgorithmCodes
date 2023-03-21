@@ -20,20 +20,33 @@ private:
                 DFS_visit(i);
         }
     }
+    // 0 1 2 3 4 5 6 7 8 9
+    // 1 0 0 0 0 0 0 1 0 0
+    // 2 0 0 1 1 0 0 0 0 1
+    // 3 0 1 0 0 0 0 0 1 0
+    // 4 0 1 0 0 0 0 0 1 0
+    // 5 0 0 0 0 0 0 1 0 0
+    // 6 0 0 0 0 0 0 1 0 0
+    // 7 1 0 0 0 1 1 0 0 1
+    // 8 0 0 1 1 0 0 0 0 0
+    // 9 0 1 0 0 0 0 1 0 0
     void BFS_visit(int v)
     {
         visitedBFS[v] = true;
-        visitOrderBFS.push_back(v);
-        for (int i = v; i <= numVertices; i++)
+        queue<int> que;
+        que.push(v);
+        while (!que.empty())
         {
-            for (int j = 0; j <= numVertices; j++)
+            for (int i = 0; i <= numVertices; i++)
             {
-                if (i != j && adjMatrix[i][j] == 1 && visitedBFS[j] == false)
+                if (adjMatrix[que.front()][i] == 1 && visitedBFS[i] == false)
                 {
-                    visitedBFS[j] = true;
-                    visitOrderBFS.push_back(j);
+                    visitedBFS[i] = true;
+                    que.push(i);
                 }
             }
+            visitOrderBFS.push_back(que.front());
+            que.pop();
         }
     }
 
@@ -57,9 +70,9 @@ public:
     void addEdge(int from, int to)
     {
         if (from > numVertices)
-            cout << from << " does not exist in your graph" << endl;
+            cout << "Vertex " << from << " does not exist in your graph" << endl;
         if (to > numVertices)
-            cout << to << " does not exist in your graph" << endl;
+            cout << "Vertex " << to << " does not exist in your graph" << endl;
         else
         {
             adjMatrix[from][to] = 1;
@@ -69,9 +82,9 @@ public:
     void removeEdge(int from, int to)
     {
         if (from > numVertices)
-            cout << from << " does not exist in your graph" << endl;
+            cout << "Vertex " << from << " does not exist in your graph" << endl;
         if (to > numVertices)
-            cout << to << " does not exist in your graph" << endl;
+            cout << "Vertex " << to << " does not exist in your graph" << endl;
         else
         {
             adjMatrix[from][to] = 0;
@@ -113,17 +126,24 @@ public:
 
 int main()
 {
-    Graph graph(9);
-    graph.addEdge(1, 2);
-    graph.addEdge(1, 3);
-    graph.addEdge(2, 5);
-    graph.addEdge(2, 7);
-    graph.addEdge(3, 4);
-    graph.addEdge(3, 9);
-    graph.addEdge(9, 8);
-    graph.addEdge(6, 8);
-    graph.addEdge(5, 6);
-    // graph.showAdjMatrix();
+    Graph graph(15);
+    graph.addEdge(1, 5);
+    graph.addEdge(1, 6);
+    graph.addEdge(1, 8);
+    graph.addEdge(2, 6);
+    graph.addEdge(2, 3);
+    graph.addEdge(2, 10);
+    graph.addEdge(11, 10);
+    graph.addEdge(4, 3);
+    graph.addEdge(4, 9);
+    graph.addEdge(4, 12);
+    graph.addEdge(9, 7);
+    graph.addEdge(14, 7);
+    graph.addEdge(14, 5);
+    graph.addEdge(13, 7);
+    graph.addEdge(11, 15);
+    graph.addEdge(11, 3);
+    graph.showAdjMatrix();
     graph.DFS(1);
     graph.BFS(1);
 }
