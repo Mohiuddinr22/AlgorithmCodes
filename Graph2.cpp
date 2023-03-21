@@ -6,16 +6,34 @@ struct Graph
 private:
     int numVertices;
     int **adjMatrix;
-    bool *visited;
-    vector<int> visitOrder;
+    bool *visitedDFS;
+    bool *visitedBFS;
+    vector<int> visitOrderDFS;
+    vector<int> visitOrderBFS;
     void DFS_visit(int v)
     {
-        visited[v] = true;
-        visitOrder.push_back(v);
+        visitedDFS[v] = true;
+        visitOrderDFS.push_back(v);
         for (int i = 0; i <= numVertices; i++)
         {
-            if (i != v && adjMatrix[v][i] == 1 && visited[i] == false)
+            if (i != v && adjMatrix[v][i] == 1 && visitedDFS[i] == false)
                 DFS_visit(i);
+        }
+    }
+    void BFS_visit(int v)
+    {
+        visitedBFS[v] = true;
+        visitOrderBFS.push_back(v);
+        for (int i = v; i <= numVertices; i++)
+        {
+            for (int j = 0; j <= numVertices; j++)
+            {
+                if (i != j && adjMatrix[i][j] == 1 && visitedBFS[j] == false)
+                {
+                    visitedBFS[j] = true;
+                    visitOrderBFS.push_back(j);
+                }
+            }
         }
     }
 
@@ -29,9 +47,12 @@ public:
             for (int j = 0; j <= numVertices; j++)
                 adjMatrix[i][j] = 0;
         }
-        visited = new bool[numVertices + 1];
+        visitedDFS = new bool[numVertices + 1];
         for (int i = 0; i <= numVertices; i++)
-            visited[i] = false;
+            visitedDFS[i] = false;
+        visitedBFS = new bool[numVertices + 1];
+        for (int i = 0; i <= numVertices; i++)
+            visitedBFS[i] = false;
     }
     void addEdge(int from, int to)
     {
@@ -73,9 +94,18 @@ public:
     void DFS(int v)
     {
         DFS_visit(v);
-        for (int i = 0; i < visitOrder.size(); i++)
+        for (int i = 0; i < visitOrderDFS.size(); i++)
         {
-            cout << visitOrder[i] << "\t";
+            cout << visitOrderDFS[i] << "\t";
+        }
+        cout << endl;
+    }
+    void BFS(int v)
+    {
+        BFS_visit(v);
+        for (int i = 0; i < visitOrderBFS.size(); i++)
+        {
+            cout << visitOrderBFS[i] << "\t";
         }
         cout << endl;
     }
@@ -95,4 +125,5 @@ int main()
     graph.addEdge(5, 6);
     // graph.showAdjMatrix();
     graph.DFS(1);
+    graph.BFS(1);
 }
