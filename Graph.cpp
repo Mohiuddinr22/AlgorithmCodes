@@ -4,7 +4,7 @@ using namespace std;
 struct Graph
 {
 private:
-    int numVertices, visitCountBFS = 0, visitCountDFS = 0;
+    int numVertices;
     int **adjMatrix;
     bool *visitedDFS;
     bool *visitedBFS;
