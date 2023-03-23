@@ -25,6 +25,10 @@ public:
         for (int i = 0; i <= numVertices; i++)
             visitedDFS[i] = false;
     }
+    ~Directed_Graph()
+    {
+        
+    }
 };
 
 int main() {}
