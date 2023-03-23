@@ -1,6 +1,67 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct Directed_Graph
+{
+private:
+    int numVertices, **adjMatrix;
+    bool *visitedBFS, *visitedDFS;
+    vector<int> visitOrderBFS, visitOrderDFS;
+
+public:
+    Directed_Graph(int v) : numVertices(v)
+    {
+        adjMatrix = new int *[numVertices + 1];
+        for (int i = 0; i <= numVertices; i++)
+        {
+            adjMatrix[i] = new int[numVertices + 1];
+            for (int j = 0; j <= numVertices; j++)
+                adjMatrix[i][j] = 0;
+        }
+        visitedBFS = new bool[numVertices + 1];
+        for (int i = 0; i <= numVertices; i++)
+            visitedBFS[i] = false;
+        visitedDFS = new bool[numVertices + 1];
+        for (int i = 0; i <= numVertices; i++)
+            visitedDFS[i] = false;
+    }
+    void addEdge(int from, int to)
+    {
+        if (from > numVertices)
+            cout << "Vertex " << from << " does not exist in your graph" << endl;
+        if (to > numVertices)
+            cout << "Vertex " << to << " does not exist in your graph" << endl;
+        else
+            adjMatrix[from][to] = 1;
+    }
+    void removeEdge(int from, int to)
+    {
+        if (from > numVertices)
+            cout << "Vertex " << from << " does not exist in your graph" << endl;
+        if (to > numVertices)
+            cout << "Vertex " << to << " does not exist in your graph" << endl;
+        else
+            adjMatrix[from][to] = 0;
+    }
+    void showAdjMatrix()
+    {
+        for (int i = 1; i <= numVertices; i++)
+        {
+            for (int j = 1; j <= numVertices; j++)
+                cout << adjMatrix[i][j] << " ";
+            cout << endl;
+        }
+    }
+    ~Directed_Graph()
+    {
+        visitOrderBFS.clear();
+        visitOrderDFS.clear();
+        for (int i = 0; i <= numVertices; i++)
+            delete[] adjMatrix[i];
+        delete[] adjMatrix, visitedBFS, visitedDFS;
+    }
+};
+
 struct Undirected_Graph
 {
 private:
