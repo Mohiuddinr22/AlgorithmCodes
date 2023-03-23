@@ -1,11 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Graph
+struct ListNode
+{
+private:
+    int val;
+    ListNode *next;
+
+public:
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+struct Undirected_Graph
 {
 private:
     int numVertices;
     int **adjMatrix;
+    ListNode *adjList;
     bool *visitedDFS;
     bool *visitedBFS;
     vector<int> visitOrderDFS;
@@ -37,7 +49,7 @@ private:
     }
 
 public:
-    Graph(int v) : numVertices(v)
+    Undirected_Graph(int v) : numVertices(v)
     {
         adjMatrix = new int *[numVertices + 1];
         for (int i = 0; i <= numVertices; i++)
@@ -61,6 +73,7 @@ public:
             cout << "Vertex " << to << " does not exist in your graph" << endl;
         else
         {
+            
             adjMatrix[from][to] = 1;
             adjMatrix[to][from] = 1;
         }
@@ -131,7 +144,7 @@ public:
         }
         cout << endl;
     }
-    ~Graph()
+    ~Undirected_Graph()
     {
         for (int i = 0; i <= numVertices; i++)
             delete[] adjMatrix[i];
@@ -141,7 +154,7 @@ public:
 
 int main()
 {
-    Graph graph(15);
+    Undirected_Graph graph(15);
     graph.addEdge(1, 5);
     graph.addEdge(1, 6);
     graph.addEdge(1, 8);
