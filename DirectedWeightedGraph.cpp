@@ -84,6 +84,17 @@ private:
         color[v] = BLACK;
         return false;
     }
+    static bool compare(const pair<pair<int, int>, int> &a, const pair<pair<int, int>, int> &b)
+    {
+        return a.second < b.second;
+    }
+    bool exists(vector<int> &arr, int val)
+    {
+        for (int i = 0; i < arr.size(); i++)
+            if (arr[i] == val)
+                return true;
+        return false;
+    }
 
 public:
     Directed_Weighted_Graph(int v) : numVertices(v)
@@ -273,6 +284,24 @@ public:
         }
         cout << "Total weight: " << totalWeight << endl;
     }*/
+    void MST_Kruskal()
+    {
+        sort(edge.begin(), edge.end(), compare);
+        vector<int> visitedNodes;
+        visitedNodes.push_back(edge[0].first.first);
+        Directed_Weighted_Graph mstGraph(numVertices);
+        for (int i = 0; i < edge.size(); i++)
+        {
+            if (!exists(visitedNodes, edge[i].first.second))
+            {
+                visitedNodes.push_back(edge[i].first.second);
+                mstGraph.addEdge(edge[i].first.first, edge[i].first.second, edge[i].second);
+            }
+            if (mstGraph.cycleExists())
+                mstGraph.removeEdge(edge[i].first.first, edge[i].first.second);
+        }
+        mstGraph.showEdges();
+    }
     ~Directed_Weighted_Graph()
     {
         visitOrderBFS.clear();
@@ -286,22 +315,19 @@ public:
 
 int main()
 {
-    Directed_Weighted_Graph graph(10);
-    graph.addEdge(1, 2, 6);
-    graph.addEdge(1, 3, 4);
-    graph.addEdge(2, 5, 9);
-    graph.addEdge(3, 4, 8);
-    graph.addEdge(3, 8, 17);
-    graph.addEdge(4, 6, 19);
-    graph.addEdge(6, 9, 2);
-    graph.addEdge(4, 7, 2);
-    graph.addEdge(7, 9, 3);
-    graph.addEdge(5, 9, 9);
-    // graph.addEdge(9, 1, 5);
-    // graph.addEdge(9, 3, 7);
-    graph.showEdges();
-    if (graph.cycleExists())
-        cout << "exists";
-    else
-        cout << "doesn't";
+    Directed_Weighted_Graph graph(9);
+    graph.addEdge(1, 2, 5);
+    graph.addEdge(1, 3, 5);
+    graph.addEdge(1, 5, 7);
+    graph.addEdge(2, 4, 8);
+    graph.addEdge(2, 5, 10);
+    graph.addEdge(3, 5, 9);
+    graph.addEdge(3, 6, 11);
+    graph.addEdge(1, 4, 12);
+    graph.addEdge(6, 1, 15);
+    graph.addEdge(4, 6, 12);
+
+    // graph.showEdges();
+    // graph.cycleExists() ? cout << "Exists" : cout << "Doesn't exist";
+    graph.MST_Kruskal();
 }
