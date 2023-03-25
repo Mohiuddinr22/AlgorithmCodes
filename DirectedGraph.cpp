@@ -7,6 +7,13 @@ private:
     int numVertices, **adjMatrix;
     bool *visitedBFS, *visitedDFS, *visited;
     vector<int> visitOrderBFS, visitOrderDFS;
+    enum Color
+    {
+        WHITE,
+        GREY,
+        BLACK
+    };
+    Color *colors;
     void BFS_visit(int v)
     {
         visitedBFS[v] = true;
@@ -34,7 +41,7 @@ private:
             if (adjMatrix[v][i] == 1 && visitedDFS[i] == false)
                 DFS_visit(i);
     }
-    bool cycle_Visit(int v)
+    /*bool cycle_Visit(int v)
     {
         visited[v] = true;
         for (int i = 0; i < numVertices; i++)
@@ -48,6 +55,22 @@ private:
                 else if (i != INT32_MIN)
                     return true;
             }
+        return false;
+    }*/
+    bool cycle_Visit(int v)
+    {
+        colors[v] = GREY;
+        for (int i = 0; i <= numVertices; i++)
+        {
+            if (adjMatrix[v][i] != 0)
+            {
+                if (colors[i] == GREY)
+                    return true;
+                else if (colors[i] == WHITE && cycle_Visit(i))
+                    return true;
+            }
+        }
+        colors[v] = BLACK;
         return false;
     }
 
@@ -70,6 +93,8 @@ public:
         visited = new bool[numVertices + 1];
         for (int i = 0; i <= numVertices; i++)
             visited[i] = false;
+        colors = new Color[numVertices + 1];
+        memset(colors, WHITE, sizeof(colors) * (numVertices + 1));
     }
     void addEdge(int from, int to)
     {
@@ -113,13 +138,25 @@ public:
                 cout << visitOrderDFS[i] << endl;
         }
     }
-    bool cycleExists()
+    /*bool cycleExists()
     {
         for (int i = 0; i <= numVertices; i++)
         {
             if (!visited[i])
                 if (cycle_Visit(i))
                     return true;
+        }
+        return false;
+    }*/
+    bool cycleExists()
+    {
+        for (int i = 1; i <= numVertices; i++)
+        {
+            if (colors[i] == WHITE)
+            {
+                if (cycle_Visit(i))
+                    return true;
+            }
         }
         return false;
     }
@@ -141,3 +178,14 @@ public:
         delete[] adjMatrix, visitedBFS, visitedDFS;
     }
 };
+
+int main()
+{
+    Directed_Graph graph(5);
+    graph.addEdge(1, 2);
+    graph.addEdge(2, 3);
+    graph.addEdge(3, 4);
+    graph.addEdge(4, 5);
+    // graph.addEdge(5, 1);
+    graph.cycleExists() ? cout << "Exists" : cout << "Doesn't";
+}
