@@ -91,8 +91,7 @@ public:
         for (int i = 0; i <= numVertices; i++)
             visitedDFS[i] = false;
         visited = new bool[numVertices + 1];
-        for (int i = 0; i <= numVertices; i++)
-            visited[i] = false;
+        memset(visited, 0, sizeof(visited));
         colors = new Color[numVertices + 1];
         memset(colors, WHITE, sizeof(colors) * (numVertices + 1));
     }
@@ -186,6 +185,6 @@ int main()
     graph.addEdge(2, 3);
     graph.addEdge(3, 4);
     graph.addEdge(4, 5);
-    // graph.addEdge(5, 1);
+    graph.addEdge(5, 1);
     graph.cycleExists() ? cout << "Exists" : cout << "Doesn't";
 }
