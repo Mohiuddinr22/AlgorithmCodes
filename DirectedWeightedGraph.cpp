@@ -94,14 +94,8 @@ private:
                 return true;
         return false;
     }
-    int adjLowest(int v)
+    int lowest(vector<int> &weight)
     {
-        vector<int> weight;
-        for (int i = 0; i <= numVertices; i++)
-        {
-            if (adjMatrix[v][i] != 0)
-                weight.push_back(adjMatrix[v][i]);
-        }
         int lowest = weight[0];
         for (int i = 1; i < weight.size(); i++)
             if (weight[i] < lowest)
@@ -270,9 +264,26 @@ public:
     void MST_Prims()
     {
         vector<int> visitedNodes(numVertices);
+        vector<int> weights(numVertices);
         sort(edge.begin(), edge.end(), compare);
         visitedNodes.push_back(edge[0].first.first);
         Directed_Weighted_Graph graph(numVertices);
+        graph.addEdge(edge[0].first.first, edge[0].first.second, edge[0].second);
+        weights.push_back(edge[0].second);
+        queue<int> queue;
+        queue.push(edge[0].first.first);
+        while (!queue.empty())
+        {
+            for (int i = 1; i <= numVertices; i++)
+            {
+                if (adjMatrix[queue.front()][i] != 0 && !exists(visitedNodes, i))
+                {
+                    visitedNodes.push_back(i);
+                    weights.push_back(adjMatrix[queue.front()][i]);
+                    queue.push(i);
+                }
+            }
+        }
     }
     ~Directed_Weighted_Graph()
     {
@@ -297,7 +308,9 @@ int main()
     graph.addEdge(2, 5, 3);
     graph.addEdge(3, 5, 5);
     graph.addEdge(3, 6, 2);
-    graph.showEdges();
-    graph.cycleExists() ? cout << "Exists" << endl : cout << "Doesn't exist" << endl;
-    graph.MST_Kruskals();
+    graph.BFS(1);
+    graph.DFS(1);
+    // graph.showEdges();
+    // graph.cycleExists() ? cout << "Exists" << endl : cout << "Doesn't exist" << endl;
+    // graph.MST_Kruskals();
 }
