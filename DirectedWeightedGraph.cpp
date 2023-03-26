@@ -15,7 +15,6 @@ private:
         BLACK
     };
     Color *color;
-
     bool weight_exists(int weight_to_check)
     {
         return any_of(
@@ -94,6 +93,20 @@ private:
             if (arr[i] == val)
                 return true;
         return false;
+    }
+    int adjLowest(int v)
+    {
+        vector<int> weight;
+        for (int i = 0; i <= numVertices; i++)
+        {
+            if (adjMatrix[v][i] != 0)
+                weight.push_back(adjMatrix[v][i]);
+        }
+        int lowest = weight[0];
+        for (int i = 1; i < weight.size(); i++)
+            if (weight[i] < lowest)
+                lowest = weight[i];
+        return lowest;
     }
 
 public:
@@ -230,77 +243,36 @@ public:
             cout << endl;
         }
     }
-    /*
-    void minimumSpanningTree(int startVertex)
-    {
-        // Initialize the minimum spanning tree set and distance array.
-        set<int> mstSet;
-        vector<int> distance(numVertices + 1, INT_MAX);
-
-        // Start with the given vertex.
-        distance[startVertex] = 0;
-        mstSet.insert(startVertex);
-
-        // Repeat until all vertices are in the minimum spanning tree set.
-        while (mstSet.size() < numVertices)
-        {
-            // Find the vertex with the minimum distance to the minimum spanning tree set.
-            int minDistance = INT_MAX;
-            int minVertex = -1;
-            for (int v = 1; v <= numVertices; v++)
-            {
-                if (distance[v] < minDistance && mstSet.find(v) == mstSet.end())
-                {
-                    minDistance = distance[v];
-                    minVertex = v;
-                }
-            }
-
-            // Add the vertex to the minimum spanning tree set.
-            mstSet.insert(minVertex);
-
-            // Update the distance array with the minimum distances to the minimum spanning tree set.
-            for (int v = 1; v <= numVertices; v++)
-            {
-                if (adjMatrix[minVertex][v] != 0 && mstSet.find(v) == mstSet.end() && adjMatrix[minVertex][v] < distance[v])
-                {
-                    distance[v] = adjMatrix[minVertex][v];
-                }
-            }
-        }
-
-        // Print the minimum spanning tree.
-        int totalWeight = 0;
-        for (int v : mstSet)
-        {
-            for (int u = 1; u <= numVertices; u++)
-            {
-                if (adjMatrix[v][u] != 0 && mstSet.find(u) != mstSet.end())
-                {
-                    cout << v << " -> " << u << " (weight " << adjMatrix[v][u] << ")" << endl;
-                    totalWeight += adjMatrix[v][u];
-                }
-            }
-        }
-        cout << "Total weight: " << totalWeight << endl;
-    }*/
-    void MST_Kruskal()
+    void MST_Kruskals()
     {
         sort(edge.begin(), edge.end(), compare);
         vector<int> visitedNodes;
         visitedNodes.push_back(edge[0].first.first);
         Directed_Weighted_Graph mstGraph(numVertices);
+        int totalWeight = 0;
         for (int i = 0; i < edge.size(); i++)
         {
             if (!exists(visitedNodes, edge[i].first.second))
             {
                 visitedNodes.push_back(edge[i].first.second);
                 mstGraph.addEdge(edge[i].first.first, edge[i].first.second, edge[i].second);
+                totalWeight += edge[i].second;
             }
             if (mstGraph.cycleExists())
+            {
+                totalWeight -= edge[i].second;
                 mstGraph.removeEdge(edge[i].first.first, edge[i].first.second);
+            }
         }
         mstGraph.showEdges();
+        cout << "Total MST weight : " << totalWeight << endl;
+    }
+    void MST_Prims()
+    {
+        vector<int> visitedNodes(numVertices);
+        sort(edge.begin(), edge.end(), compare);
+        visitedNodes.push_back(edge[0].first.first);
+        Directed_Weighted_Graph graph(numVertices);
     }
     ~Directed_Weighted_Graph()
     {
@@ -315,19 +287,17 @@ public:
 
 int main()
 {
-    Directed_Weighted_Graph graph(9);
-    graph.addEdge(1, 2, 5);
-    graph.addEdge(1, 3, 5);
-    graph.addEdge(1, 5, 7);
-    graph.addEdge(2, 4, 8);
-    graph.addEdge(2, 5, 10);
-    graph.addEdge(3, 5, 9);
-    graph.addEdge(3, 6, 11);
-    graph.addEdge(1, 4, 12);
-    graph.addEdge(6, 1, 15);
-    graph.addEdge(4, 6, 12);
-
-    // graph.showEdges();
-    // graph.cycleExists() ? cout << "Exists" : cout << "Doesn't exist";
-    graph.MST_Kruskal();
+    Directed_Weighted_Graph graph(6);
+    graph.addEdge(1, 2, 1);
+    graph.addEdge(1, 3, 2);
+    graph.addEdge(1, 4, 3);
+    graph.addEdge(1, 5, 2);
+    graph.addEdge(1, 6, 1);
+    graph.addEdge(2, 4, 4);
+    graph.addEdge(2, 5, 3);
+    graph.addEdge(3, 5, 5);
+    graph.addEdge(3, 6, 2);
+    graph.showEdges();
+    graph.cycleExists() ? cout << "Exists" << endl : cout << "Doesn't exist" << endl;
+    graph.MST_Kruskals();
 }
