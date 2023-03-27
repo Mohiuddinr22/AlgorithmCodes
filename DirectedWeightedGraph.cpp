@@ -96,11 +96,32 @@ private:
     }
     int lowest(vector<int> &weight)
     {
-        int lowest = weight[0];
+        int lowestVal = weight[0];
         for (int i = 1; i < weight.size(); i++)
-            if (weight[i] < lowest)
-                lowest = weight[i];
-        return lowest;
+            if (weight[i] < lowestVal)
+                lowestVal = weight[i];
+        return lowestVal;
+    }
+    void eraseElement(vector<int> &arr, int val)
+    {
+        auto it = find(arr.begin(), arr.end(), val);
+        if (it != arr.end())
+            arr.erase(it);
+    }
+    pair<int, int> minVertex(vector<int> &mstSet)
+    {
+        int min = INT_MAX;
+        int vertex;
+        pair<int, int> e;
+        for (int i = 0; i < mstSet.size(); i++)
+            for (int j = 1; j <= numVertices; j++)
+                if (!exists(mstSet, j) && adjMatrix[i][j] < min)
+                {
+                    vertex = i;
+                    min = adjMatrix[i][j];
+                    e = make_pair(i, vertex);
+                }
+        return e;
     }
 
 public:
@@ -209,7 +230,20 @@ public:
                 cout << visitOrderBFS[i] << endl;
         }
     }
-    void DFS(int v)
+    vector<int> DFS(int v)
+    {
+        DFS_visit(v);
+        return visitOrderDFS;
+        /*cout << "DFS visit order : ";
+        for (int i = 0; i < visitOrderDFS.size(); i++)
+        {
+            if (i != visitOrderDFS.size() - 1)
+                cout << visitOrderDFS[i] << "->";
+            else
+                cout << visitOrderDFS[i] << endl;
+        }*/
+    }
+    void showDFS(int v)
     {
         DFS_visit(v);
         cout << "DFS visit order : ";
@@ -220,6 +254,15 @@ public:
             else
                 cout << visitOrderDFS[i] << endl;
         }
+    }
+    bool connected()
+    {
+        for (int i = 1; i <= numVertices; i++)
+        {
+            if (DFS(i).size() == numVertices)
+                return true;
+        }
+        return false;
     }
     void showEdges()
     {
@@ -239,12 +282,17 @@ public:
     }
     void MST_Kruskals()
     {
+        if (!connected())
+        {
+            cout << "Graph is not connected, can't find MST" << endl;
+            return;
+        }
         sort(edge.begin(), edge.end(), compare);
         vector<int> visitedNodes;
         visitedNodes.push_back(edge[0].first.first);
         Directed_Weighted_Graph mstGraph(numVertices);
-        int totalWeight = 0;
-        for (int i = 0; i < edge.size(); i++)
+        int totalWeight = 0, i;
+        for (i = 0; i < edge.size(); i++)
         {
             if (!exists(visitedNodes, edge[i].first.second))
             {
@@ -261,29 +309,31 @@ public:
         mstGraph.showEdges();
         cout << "Total MST weight : " << totalWeight << endl;
     }
-    void MST_Prims()
+    /*void MST_Prims()
     {
-        vector<int> visitedNodes(numVertices);
-        vector<int> weights(numVertices);
-        sort(edge.begin(), edge.end(), compare);
-        visitedNodes.push_back(edge[0].first.first);
-        Directed_Weighted_Graph graph(numVertices);
-        graph.addEdge(edge[0].first.first, edge[0].first.second, edge[0].second);
-        weights.push_back(edge[0].second);
-        queue<int> queue;
-        queue.push(edge[0].first.first);
-        while (!queue.empty())
+        int track[numVertices];
+        vector<int> val(numVertices, INT_MAX);
+        vector<bool> mstSet(numVertices, false);
+        track[0] = -1;
+        val[0] = 0;
+        for (int i = 1; i < numVertices; i++)
         {
-            for (int i = 1; i <= numVertices; i++)
+            int minVx = minVertex(val, mstSet);
+            mstSet[minVx] = true;
+            for (int j = 1; j <= numVertices; j++)
             {
-                if (adjMatrix[queue.front()][i] != 0 && !exists(visitedNodes, i))
+                if (adjMatrix[minVx][j] != 0 && mstSet[j] == false && adjMatrix[minVx][j] < val[j])
                 {
-                    visitedNodes.push_back(i);
-                    weights.push_back(adjMatrix[queue.front()][i]);
-                    queue.push(i);
+                    val[j] = adjMatrix[minVx][j];
+                    track[j] = minVx;
                 }
             }
         }
+        for (int i = 1; i <= numVertices; i++)
+            cout << track[i] << "<----" << adjMatrix[track[i]][i] << "---->" << i << endl;
+    }*/
+    void MST_Prims()
+    {
     }
     ~Directed_Weighted_Graph()
     {
@@ -299,18 +349,20 @@ public:
 int main()
 {
     Directed_Weighted_Graph graph(6);
-    graph.addEdge(1, 2, 1);
-    graph.addEdge(1, 3, 2);
-    graph.addEdge(1, 4, 3);
-    graph.addEdge(1, 5, 2);
-    graph.addEdge(1, 6, 1);
-    graph.addEdge(2, 4, 4);
-    graph.addEdge(2, 5, 3);
-    graph.addEdge(3, 5, 5);
-    graph.addEdge(3, 6, 2);
-    graph.BFS(1);
-    graph.DFS(1);
-    // graph.showEdges();
+    graph.addEdge(1, 2, 4);
+    graph.addEdge(1, 3, 7);
+    graph.addEdge(1, 6, 9);
+    graph.addEdge(2, 4, 19);
+    graph.addEdge(2, 5, 20);
+    graph.addEdge(3, 5, 12);
+    graph.addEdge(4, 5, 6);
+    graph.addEdge(4, 6, 5);
+    graph.addEdge(5, 6, 8);
+    graph.MST_Prims();
+    // graph.BFS(1);
+    // graph.showDFS(1);
+    // graph.connected() ? cout << "is" : cout << "isn't";
+    // // graph.showEdges();
     // graph.cycleExists() ? cout << "Exists" << endl : cout << "Doesn't exist" << endl;
     // graph.MST_Kruskals();
 }
