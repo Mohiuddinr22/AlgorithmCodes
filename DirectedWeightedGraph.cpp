@@ -51,22 +51,6 @@ private:
             if (adjMatrix[v][i] != 0 && visitedDFS[i] == false)
                 DFS_visit(i);
     }
-    /*bool cycle_Visit(int v, int x)
-    {
-        visited[v] = true;
-        for (int i = 0; i < numVertices; i++)
-            if (adjMatrix[v][i] != 0)
-            {
-                if (!visited[i])
-                {
-                    if (cycle_Visit(i, v))
-                        return true;
-                }
-                else if (i != x)
-                    return true;
-            }
-        return false;
-    }*/
     bool cycle_Visit(int v)
     {
         color[v] = GREY;
@@ -113,7 +97,7 @@ private:
         int min = INT_MAX;
         int vertex;
         pair<int, int> e;
-        for (int i = 0; i < mstSet.size(); i++)
+        for (int i = 1; i <= mstSet.size(); i++)
             for (int j = 1; j <= numVertices; j++)
                 if (!exists(mstSet, j) && adjMatrix[i][j] < min)
                 {
@@ -156,16 +140,7 @@ public:
         }
         return false;
     }
-    /*bool cycleExists()
-    {
-        for (int i = 0; i <= numVertices; i++)
-        {
-            if (!visited[i])
-                if (cycle_Visit(i, -1))
-                    return true;
-        }
-        return false;
-    }*/
+    /**/
     void addEdge(int from, int to, int weight)
     {
         if (from > numVertices)
@@ -332,9 +307,6 @@ public:
         for (int i = 1; i <= numVertices; i++)
             cout << track[i] << "<----" << adjMatrix[track[i]][i] << "---->" << i << endl;
     }*/
-    void MST_Prims()
-    {
-    }
     ~Directed_Weighted_Graph()
     {
         visitOrderBFS.clear();
@@ -348,21 +320,11 @@ public:
 
 int main()
 {
-    Directed_Weighted_Graph graph(6);
-    graph.addEdge(1, 2, 4);
-    graph.addEdge(1, 3, 7);
-    graph.addEdge(1, 6, 9);
-    graph.addEdge(2, 4, 19);
-    graph.addEdge(2, 5, 20);
-    graph.addEdge(3, 5, 12);
-    graph.addEdge(4, 5, 6);
-    graph.addEdge(4, 6, 5);
-    graph.addEdge(5, 6, 8);
-    graph.MST_Prims();
-    // graph.BFS(1);
-    // graph.showDFS(1);
-    // graph.connected() ? cout << "is" : cout << "isn't";
-    // // graph.showEdges();
-    // graph.cycleExists() ? cout << "Exists" << endl : cout << "Doesn't exist" << endl;
-    // graph.MST_Kruskals();
 }
+// graph.BFS(1);
+// graph.showDFS(1);
+// graph.connected() ? cout << "is" : cout << "isn't";
+// // graph.showEdges();
+// graph.cycleExists() ? cout << "Exists" << endl : cout << "Doesn't exist" << endl;
+// graph.MST_Kruskals();
+// }

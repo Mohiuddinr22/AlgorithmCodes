@@ -1,14 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct UnDirected_Weighted_Graph
+struct Undirected_Weighted_Graph
 {
 private:
     int numVertices, **adjMatrix;
     bool *visitedBFS, *visitedDFS;
-    vector<int> visitOrderBFS, visitOrderDFS;
+    vector<int> visitOrderBFS, visitOrderDFS, visited;
     vector<pair<pair<int, int>, int>> edge;
-
+    bool cycle_Visit(int v, int x)
+    {
+        visited[v] = true;
+        for (int i = 0; i < numVertices; i++)
+            if (adjMatrix[v][i] != 0)
+            {
+                if (!visited[i])
+                {
+                    if (cycle_Visit(i, v))
+                        return true;
+                }
+                else if (i != x)
+                    return true;
+            }
+        return false;
+    }
     bool weight_exists(int weight_to_check)
     {
         return any_of(
@@ -45,9 +60,22 @@ private:
             if (adjMatrix[v][i] != 0 && visitedDFS[i] == false)
                 DFS_visit(i);
     }
+    static bool compare(const pair<pair<int, int>, int> &a, pair<pair<int, int>, int> &b)
+    {
+        return a.second < b.second;
+    }
+    bool exists(vector<int> &arr, int val)
+    {
+        for (int i = 0; i < arr.size(); i++)
+        {
+            if (arr[i] == val)
+                return true;
+        }
+        return false;
+    }
 
 public:
-    UnDirected_Weighted_Graph(int v) : numVertices(v)
+    Undirected_Weighted_Graph(int v) : numVertices(v)
     {
         adjMatrix = new int *[numVertices + 1];
         for (int i = 0; i <= numVertices; i++)
@@ -126,6 +154,16 @@ public:
                        edge.end());
         }
     }
+    bool cycleExists()
+    {
+        for (int i = 0; i <= numVertices; i++)
+        {
+            if (!visited[i])
+                if (cycle_Visit(i, -1))
+                    return true;
+        }
+        return false;
+    }
     void BFS(int v)
     {
         BFS_visit(v);
@@ -138,7 +176,12 @@ public:
                 cout << visitOrderBFS[i] << endl;
         }
     }
-    void DFS(int v)
+    vector<int> DFS(int v)
+    {
+        DFS_visit(v);
+        return visitOrderDFS;
+    }
+    void showDFS(int v)
     {
         DFS_visit(v);
         cout << "DFS visit order : ";
@@ -149,6 +192,15 @@ public:
             else
                 cout << visitOrderDFS[i] << endl;
         }
+    }
+    bool connected()
+    {
+        for (int i = 1; i <= numVertices; i++)
+        {
+            if (DFS(i).size() == numVertices)
+                return true;
+        }
+        return false;
     }
     void showEdges()
     {
@@ -166,7 +218,40 @@ public:
             cout << endl;
         }
     }
-    ~UnDirected_Weighted_Graph()
+    void MST_Prims()
+    {
+        vector<int> visitedNodes;
+        vector<pair<int, int>> edgesMST;
+        int totalWeight = 0;
+        sort(edge.begin(), edge.end(), compare);
+        visitedNodes.push_back(edge[0].first.first);
+        visitedNodes.push_back(edge[0].first.second);
+        edgesMST.push_back({edge[0].first.second, edge[0].first.first});
+        while (edgesMST.size() < numVertices - 1)
+        {
+            int minWeight = INT_MAX;
+            pair<int, int> minEdge;
+            for (int i = 0; i < visitedNodes.size(); i++)
+            {
+                for (int j = 1; j <= numVertices; j++)
+                {
+                    if (!exists(visitedNodes, j) && adjMatrix[visitedNodes[i]][j] != 0 && adjMatrix[visitedNodes[i]][j] < minWeight)
+                    {
+                        minWeight = adjMatrix[visitedNodes[i]][j];
+                        minEdge = make_pair(visitedNodes[i], j);
+                    }
+                }
+            }
+            edgesMST.push_back(minEdge);
+            visitedNodes.push_back(minEdge.second);
+        }
+        cout << "Minimum Spanning Tree Edges: " << endl;
+        for (int i = 0; i < edgesMST.size(); i++)
+        {
+            cout << edgesMST[i].first << " <-------" << adjMatrix[edgesMST[i].first][edgesMST[i].second] << "------->" << edgesMST[i].second << endl;
+        }
+    }
+    ~Undirected_Weighted_Graph()
     {
         visitOrderBFS.clear();
         visitOrderDFS.clear();
@@ -176,3 +261,29 @@ public:
         delete[] adjMatrix, visitedBFS, visitedDFS;
     }
 };
+
+int main()
+{
+    Undirected_Weighted_Graph graph(9);
+    graph.addEdge(1, 2, 9);
+    graph.addEdge(1, 3, 12);
+    graph.addEdge(1, 4, 8);
+    graph.addEdge(1, 6, 11);
+    graph.addEdge(1, 9, 11);
+    graph.addEdge(2, 4, 6);
+    graph.addEdge(2, 6, 8);
+    graph.addEdge(3, 6, 13);
+    graph.addEdge(3, 9, 10);
+    graph.addEdge(4, 6, 5);
+    graph.addEdge(4, 8, 7);
+    graph.addEdge(4, 5, 10);
+    graph.addEdge(5, 6, 9);
+    graph.addEdge(5, 8, 11);
+    graph.addEdge(6, 8, 9);
+    graph.addEdge(6, 7, 8);
+    graph.addEdge(6, 9, 7);
+    graph.addEdge(7, 8, 11);
+    graph.addEdge(7, 9, 10);
+    graph.addEdge(8, 9, 8);
+    graph.MST_Prims();
+}
