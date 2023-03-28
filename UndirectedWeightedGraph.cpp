@@ -197,10 +197,10 @@ public:
     {
         for (int i = 1; i <= numVertices; i++)
         {
-            if (DFS(i).size() == numVertices)
-                return true;
+            if (DFS(i).size() != numVertices)
+                return false;
         }
-        return false;
+        return true;
     }
     void showEdges()
     {
@@ -285,5 +285,6 @@ int main()
     graph.addEdge(7, 8, 11);
     graph.addEdge(7, 9, 10);
     graph.addEdge(8, 9, 8);
-    graph.MST_Prims();
+    // graph.MST_Prims();
+    cout << graph.connected();
 }
