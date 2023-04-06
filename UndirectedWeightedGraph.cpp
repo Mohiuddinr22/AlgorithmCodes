@@ -280,5 +280,6 @@ int main()
     graph.addEdge(10, 8, 11);
     graph.addEdge(10, 6, 7);
     // graph.MST_Prims();
-    graph.MST_Kruskals();
+    graph.showDFS(1);
+    graph.BFS(1);
 }
