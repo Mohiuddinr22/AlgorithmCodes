@@ -265,9 +265,10 @@ public:
         sort(edge.begin(), edge.end(), compare);
         vector<int> visitedNodes;
         visitedNodes.push_back(edge[0].first.first);
+        // visitedNodes.push_back(edge[0].first.second);
         Directed_Weighted_Graph mstGraph(numVertices);
-        int totalWeight = 0, i;
-        for (i = 0; i < edge.size(); i++)
+        int totalWeight = 0;
+        for (int i = 0; i < edge.size(); i++)
         {
             if (!exists(visitedNodes, edge[i].first.second))
             {
@@ -320,6 +321,22 @@ public:
 
 int main()
 {
+    Directed_Weighted_Graph graph(10);
+    graph.addEdge(1, 7, 8);
+    graph.addEdge(2, 4, 2);
+    graph.addEdge(3, 5, 14);
+    graph.addEdge(3, 10, 7);
+    graph.addEdge(4, 7, 10);
+    graph.addEdge(4, 6, 4);
+    graph.addEdge(5, 9, 6);
+    graph.addEdge(6, 1, 10);
+    graph.addEdge(7, 5, 9);
+    graph.addEdge(7, 8, 9);
+    graph.addEdge(8, 2, 5);
+    graph.addEdge(9, 10, 8);
+    graph.addEdge(10, 8, 11);
+    graph.addEdge(10, 6, 7);
+    graph.MST_Kruskals();
 }
 // graph.BFS(1);
 // graph.showDFS(1);

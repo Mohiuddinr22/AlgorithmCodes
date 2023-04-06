@@ -8,7 +8,7 @@ public:
     item(int wei, int val) : weight(wei), value(val) {}
 };
 
-int knapsack(vector<item> &items, int weightCap)
+void knapsack(vector<item> &items, int weightCap)
 {
     int **matrix = new int *[items.size() + 1];
     for (int i = 0; i <= items.size(); i++)
@@ -35,7 +35,15 @@ int knapsack(vector<item> &items, int weightCap)
         }
         cout << endl;
     }
-    return matrix[items.size()][weightCap];
+    int i = items.size(), j = weightCap;
+    while (i > 0 && j > 0)
+    {
+        if (matrix[i][j] != matrix[i - 1][j])
+            cout << "Value of item " << i << " was taken" << endl;
+        i--;
+        j -= items[i].weight;
+    }
+    cout << "Max profit : " << matrix[items.size()][weightCap] << endl;
 }
 
 int main()
@@ -45,5 +53,5 @@ int main()
     item i3(20, 120);
     // item i4(5, 6);
     vector<item> items = {i1, i2, i3};
-    cout << knapsack(items, 60);
+    knapsack(items, 60);
 }

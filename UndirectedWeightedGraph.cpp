@@ -197,10 +197,10 @@ public:
     {
         for (int i = 1; i <= numVertices; i++)
         {
-            if (DFS(i).size() != numVertices)
-                return false;
+            if (DFS(i).size() == numVertices)
+                return true;
         }
-        return true;
+        return false;
     }
     void showEdges()
     {
@@ -264,27 +264,21 @@ public:
 
 int main()
 {
-    Undirected_Weighted_Graph graph(9);
-    graph.addEdge(1, 2, 9);
-    graph.addEdge(1, 3, 12);
-    graph.addEdge(1, 4, 8);
-    graph.addEdge(1, 6, 11);
-    graph.addEdge(1, 9, 11);
-    graph.addEdge(2, 4, 6);
-    graph.addEdge(2, 6, 8);
-    graph.addEdge(3, 6, 13);
-    graph.addEdge(3, 9, 10);
-    graph.addEdge(4, 6, 5);
-    graph.addEdge(4, 8, 7);
-    graph.addEdge(4, 5, 10);
-    graph.addEdge(5, 6, 9);
-    graph.addEdge(5, 8, 11);
-    graph.addEdge(6, 8, 9);
-    graph.addEdge(6, 7, 8);
-    graph.addEdge(6, 9, 7);
-    graph.addEdge(7, 8, 11);
-    graph.addEdge(7, 9, 10);
-    graph.addEdge(8, 9, 8);
+    Undirected_Weighted_Graph graph(10);
+    graph.addEdge(1, 7, 8);
+    graph.addEdge(2, 4, 2);
+    graph.addEdge(3, 5, 14);
+    graph.addEdge(3, 10, 7);
+    graph.addEdge(4, 7, 10);
+    graph.addEdge(4, 6, 4);
+    graph.addEdge(5, 9, 6);
+    graph.addEdge(6, 1, 10);
+    graph.addEdge(7, 5, 9);
+    graph.addEdge(7, 8, 9);
+    graph.addEdge(8, 2, 5);
+    graph.addEdge(9, 10, 8);
+    graph.addEdge(10, 8, 11);
+    graph.addEdge(10, 6, 7);
     // graph.MST_Prims();
-    cout << graph.connected();
+    graph.MST_Kruskals();
 }
