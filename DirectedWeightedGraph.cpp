@@ -337,7 +337,7 @@ int main()
     graph.addEdge(9, 10, 8);
     graph.addEdge(10, 8, 11);
     graph.addEdge(10, 6, 7);
-    graph.BFS(1);
+    graph.MST_Kruskals();
 }
 // graph.BFS(1);
 // graph.showDFS(1);
